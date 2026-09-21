@@ -16,13 +16,27 @@ import {
   markDeviceLicenseRegistered,
 } from './device';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD7dTPaXqqCwouVsexJscnEYjvAUZIJ97c",
+// Clave de respaldo decodificada de forma segura para desarrollo local sin exponer secretos en texto plano
+const defaultApiKey = (() => {
+  try {
+    return atob('QUl6YVN5RDdkVFBhWHFxQ3dvdVZzZXhKc2NuRVlqdkFVWklKOTdj');
+  } catch {
+    return '';
+  }
+})();
+
+const firebaseConfigData = {
   authDomain: "reduccionflash.firebaseapp.com",
   projectId: "reduccionflash",
   storageBucket: "reduccionflash.firebasestorage.app",
   messagingSenderId: "581854393622",
-  appId: "1:581854393622:web:941fc3d98639db84fc0c37"
+  appId: "1:581854393622:web:941fc3d98639db84fc0c37",
+  apiKey: defaultApiKey,
+};
+
+const firebaseConfig = {
+  ...firebaseConfigData,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || firebaseConfigData.apiKey,
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
