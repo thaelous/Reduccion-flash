@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Rooms collection for multiplayer classroom games
+    match /rooms/{roomId} {
+      allow read, write: if true;
+
+      // Players subcollection within each room
+      match /players/{playerId} {
+        allow read, write: if true;
+      }
+    }
+
+    // Suscripciones collection for purchase codes (e.g. fla-0001 / FLA-0001)
+    match /suscripciones/{suscripcionId} {
+      allow read, write: if true;
+    }
+
+    // Perfiles de docentes y usuarios en español (usuarios)
+    match /usuarios/{userId} {
+      allow read, write: if true;
+    }
+
+    // Legacy fallback rules
+    match /licenses/{licenseId} {
+      allow read, write: if true;
+    }
+
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+  }
+}

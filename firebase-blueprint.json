@@ -1,0 +1,128 @@
+{
+  "entities": {
+    "Room": {
+      "title": "Room",
+      "description": "Multiplayer educational game room for Reduccion calculation matches",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Unique room PIN code for direct lookup (e.g. A1B2)"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["waiting", "starting", "showing_sequence", "answering", "round_finished", "game_over"],
+          "description": "Current state of the game room"
+        },
+        "hostName": {
+          "type": "string",
+          "description": "Teacher / host display name"
+        },
+        "hostId": {
+          "type": "string",
+          "description": "Teacher client ID"
+        },
+        "settings": {
+          "type": "object",
+          "description": "Game rules, mode, sequence length, intervals, and round limits"
+        },
+        "currentRound": {
+          "type": "number",
+          "description": "Current round number"
+        },
+        "sequence": {
+          "type": "array",
+          "items": { "type": "number" },
+          "description": "Current round number sequence to reduce"
+        },
+        "correctAnswer": {
+          "type": "number",
+          "description": "Calculated single-digit digital root answer"
+        },
+        "createdAt": {
+          "type": "number",
+          "description": "Creation timestamp in ms"
+        }
+      },
+      "required": ["code", "status", "settings", "createdAt"]
+    },
+    "Player": {
+      "title": "Player",
+      "description": "Student in a multiplayer room",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "score": { "type": "number" },
+        "streak": { "type": "number" },
+        "lastAnswer": { "type": ["number", "null"] },
+        "isCorrect": { "type": ["boolean", "null"] },
+        "lastAnswerTimeMs": { "type": ["number", "null"] },
+        "joinedAt": { "type": "number" }
+      },
+      "required": ["id", "name", "score"]
+    },
+    "License": {
+      "title": "License",
+      "description": "Sales, activation and purchase codes for Reducción Flash",
+      "type": "object",
+      "properties": {
+        "codigo": { "type": "string" },
+        "usada": { "type": "boolean" },
+        "usadoPorEmail": { "type": "string" },
+        "fechaCanje": { "type": "number" },
+        "activo": { "type": "boolean" },
+        "deviceId": { "type": "string" },
+        "dispositivoId": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["codigo"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Registered teacher profile in usuarios collection with linked license and password, keyed by email",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "password": { "type": "string" },
+        "displayName": { "type": "string" },
+        "licenseCode": { "type": "string" },
+        "licenseActive": { "type": "boolean" },
+        "activo": { "type": "boolean" },
+        "deviceId": { "type": "string" },
+        "dispositivoId": { "type": "string" },
+        "role": { "type": "string" },
+        "fechaRegistro": { "type": "number" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["email"]
+    }
+  },
+  "firestore": {
+    "/rooms/{roomId}": {
+      "schema": "Room",
+      "description": "Game room document identified by room PIN"
+    },
+    "/rooms/{roomId}/players/{playerId}": {
+      "schema": "Player",
+      "description": "Subcollection of players joined to this room"
+    },
+    "/suscripciones/{suscripcionId}": {
+      "schema": "License",
+      "description": "Colección de suscripciones y códigos de compra (ej. FLA-0001)"
+    },
+    "/usuarios/{userId}": {
+      "schema": "UserProfile",
+      "description": "Colección de perfiles de profesores y usuarios registrados con estado de licencia"
+    },
+    "/licenses/{licenseId}": {
+      "schema": "License",
+      "description": "Legacy sales and activation codes collection"
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Legacy registered teachers and users with license status"
+    }
+  }
+}

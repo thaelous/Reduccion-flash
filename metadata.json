@@ -1,0 +1,8 @@
+{
+  "name": "Reducción - Juego de Cálculo Mental",
+  "description": "Juego matemático de reducción y cálculo mental rápido individual y multijugador educativo en vivo con panel de profesor y acceso por código QR y PIN.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
